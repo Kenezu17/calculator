@@ -2,7 +2,9 @@ import React from 'react'
 import {useState} from 'react'
 
 function App() {
-const [input, setInput] =useState('')
+const [input, setInput] = useState('')
+const [result, setResult]=useState('')
+
 
 
   const buttons = [
@@ -13,7 +15,22 @@ const [input, setInput] =useState('')
     '+','0','.','='
   ]
   
-
+ const handlebutton =(btn) =>{
+  if( btn === 'C' ){
+    setInput('')
+  }else if(btn === 'Del'){
+    setInput(input.slice(0, -1))
+  }else if (btn === '='){
+    try{
+    const computed = eval(input.replace('x', '*'))
+    setResult(computed)
+    }catch {
+     setResult('I misss you')
+    }
+  }else{
+    setInput(input + btn)
+  }
+ }
 
   return (
   <div className='bg-black h-screen flex justify-center items-center pt-10'> 
@@ -21,8 +38,8 @@ const [input, setInput] =useState('')
     <label className=' text-md text-stone-600 pt-4 pb-2'>Calculator</label>
 
     <div className=' relative rounded-3xl  w-70 pt-15 px-1.5 bg-slate-500 h-200  items-center '>
-      <p className='flex text-white justify-end items-end pr-3'>Value  </p>
-      <span className='flex text-sm justify-end pr-3 pt-2 text-green-300   '>Total</span>
+      <p className='flex text-white text-lg justify-end items-end pr-3'>{input || '0'}  </p>
+      <span className='flex text-sm justify-end pr-3 pt-2 text-green-300   '>{result}</span>
     </div>
 
 
@@ -35,7 +52,7 @@ const [input, setInput] =useState('')
         ${btn === '.'? 'bg-stone-500': ''}
         ${['x','/','+','-', '%'].includes(btn)? 'bg-stone-500': ''}
         ${['0','1','2','3','4','5','6','7','8','9'].includes(btn)? 'bg-stone-800':''}
-       `} key={index} >{btn}</button>
+       `} key={index} onClick={()=>handlebutton(btn)} >{btn}</button>
     ))}
    </div>
 
